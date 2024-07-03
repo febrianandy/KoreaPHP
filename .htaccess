@@ -1,0 +1,16 @@
+# .htaccess in the root directory
+
+# Prevent directory listing
+Options -Indexes
+
+# Restrict access to app folder and sensitive files
+<DirectoryMatch "^/(app)">
+    Deny from all
+</DirectoryMatch>
+
+# Rewrite requests to public/index.php
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} !^/public
+RewriteRule ^(.*)$ public/$1 [L]

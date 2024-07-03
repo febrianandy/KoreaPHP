@@ -1,0 +1,10 @@
+{
+    "name": "acer3/php-framework",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\" : "app/"
+        }
+    },
+    "require": {}
+}
