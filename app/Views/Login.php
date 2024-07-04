@@ -1,5 +1,5 @@
 <?php include_once("partials/head.php"); ?>
-<div class="container">
+  <div class="container">
     <div class="login-form">
       <h2 class="text-center">Login</h2>
       <form>
