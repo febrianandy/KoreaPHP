@@ -6,7 +6,6 @@ use App\Core\Request;
 class Router {
 
     private static array $validMethods = ['GET', 'POST', 'PUT', 'DELETE'];
-    
     private static array $routes = [];
 
     public static function add(string $method, string $path, string $controller, string $function, array $middlewares = []): void

@@ -6,11 +6,13 @@ use App\Core\Controller;
 
 class HomeController extends Controller {
     
-    public function index(Request $request)
+    public function index()
     {
-        $response = [
-            'data' => 'Sample user data'
-        ];
-        $this->json($response);
+       $this->view("Home");
+    }
+
+    public function login()
+    {
+       $this->view("Login");
     }
 }
