@@ -1,21 +1,20 @@
 <?php
 namespace App\Core;
 
+use App\Core\Request; 
+
 class Router {
 
+    private static array $validMethods = ['GET', 'POST', 'PUT', 'DELETE'];
     private static array $routes = [];
 
-    /**
-     * Register a route with the router.
-     *
-     * @param string $method HTTP method (GET, POST, etc.)
-     * @param string $path Route path
-     * @param string $controller Controller class name
-     * @param string $function Controller method to call
-     * @param array $middlewares Array of middleware class names
-     */
     public static function add(string $method, string $path, string $controller, string $function, array $middlewares = []): void
     {
+        $method = strtoupper($method);
+        if (!in_array($method, self::$validMethods)) {
+            throw new \InvalidArgumentException("Invalid HTTP method: {$method}");
+        }
+
         self::$routes[] = [
             'method' => $method,
             'path' => $path,
@@ -25,66 +24,65 @@ class Router {
         ];
     }
 
-    
+
     public static function dispatch(): void
     {
-        $path = $_SERVER['REQUEST_URI'];
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
 
         $foundRoute = null;
+        $params = [];
 
         foreach (self::$routes as $route) {
-            // Check method and path match
-            if ($method === $route['method'] && self::pathMatches($route['path'], $path)) {
+            if ($method === $route['method'] && self::pathMatches($route['path'], $path, $params)) {
                 $foundRoute = $route;
                 break;
             }
         }
 
         if ($foundRoute) {
-            // Call middleware
             foreach ($foundRoute['middlewares'] as $middlewareClass) {
                 $middleware = new $middlewareClass();
-                $middleware->handle();
+                if (!$middleware->handle()) {
+                    return;
+                }
             }
 
-            // Call controller method
             $controller = new $foundRoute['controller']();
             $function = $foundRoute['function'];
-            $controller->$function();
+            $request = new Request();
+            try {
+                $controller->$function($request, ...array_values($params));
+            } catch (\Exception $e) {
+                Response::error($e->getMessage(), 500);
+            }
         } else {
             self::notFound();
         }
     }
 
-    /**
-     * Helper function to check if a path matches the route pattern.
-     *
-     * @param string $pattern Route pattern (supports basic placeholders like {id})
-     * @param string $path Requested path
-     * @return bool Whether the path matches the pattern
-     */
-    private static function pathMatches(string $pattern, string $path): bool
+    private static function pathMatches(string $pattern, string $path, array &$params): bool
     {
-        // Escape slashes in the pattern
         $pattern = str_replace('/', '\/', $pattern);
-
-        // Convert placeholders {id} to regex patterns
         $pattern = preg_replace('/{([^\/]+)}/', '(?P<$1>[^\/]+)', $pattern);
-
-        // Add start and end delimiters, and case insensitive flag
         $pattern = "/^{$pattern}$/i";
 
-        // Check if path matches pattern
-        return (bool) preg_match($pattern, $path);
+        if (preg_match($pattern, $path, $matches)) {
+            foreach ($matches as $key => $value) {
+                if (!is_int($key)) {
+                    $params[$key] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                }
+            }
+            return true;
+        }
+
+        return false;
     }
 
-    /**
-     * Handle 404 Not Found.
-     */
     private static function notFound(): void
     {
         http_response_code(404);
-        echo '404 Not Found';
+        header('Content-Type: application/json');
+        echo json_encode(['error' => '404 Not Found']);
     }
 }
