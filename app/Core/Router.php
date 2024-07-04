@@ -6,6 +6,7 @@ use App\Core\Request;
 class Router {
 
     private static array $validMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+    
     private static array $routes = [];
 
     public static function add(string $method, string $path, string $controller, string $function, array $middlewares = []): void
@@ -25,7 +26,7 @@ class Router {
     }
 
 
-    public static function dispatch(): void
+    public static function run(): void
     {
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $method = $_SERVER['REQUEST_METHOD'];
