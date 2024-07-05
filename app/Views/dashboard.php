@@ -16,40 +16,41 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3">Picking List</h1>
                 <div>
-                    <button class="btn btn-primary">Add New Data</button>
+                    <button class="btn btn-primary btn-sm">Add New Data</button>
                 </div>
             </div>
-
-            <table class="table table-bordered table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>NO.</th>
-                        <th>PL DATE</th>
-                        <th>PL CODE</th>
-                        <th>COMPANY</th>
-                        <th>LOCATION</th>
-                        <th>STATUS</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>08-05-2024</td>
-                        <td>PL-PIP-2304-000009</td>
-                        <td>INDAPLAS</td>
-                        <td>IWD PUSAT</td>
-                        <td>PICKING LIST ALREADY CREATED</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>02-05-2024</td>
-                        <td>PL-PIP-2405-000009</td>
-                        <td>INDAPLAS</td>
-                        <td>IWD PUSAT</td>
-                        <td>CANCELLED</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table class="table table-bordered table-striped table-sm table-fixed">
+                    <thead class="thead">
+                        <tr>
+                            <th>NO.</th>
+                            <th>PL DATE</th>
+                            <th>PL CODE</th>
+                            <th>COMPANY</th>
+                            <th>LOCATION</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>08-05-2024</td>
+                            <td>PL-PIP-2304-000009</td>
+                            <td>INDAPLAS</td>
+                            <td>IWD PUSAT</td>
+                            <td>PICKING LIST ALREADY CREATED</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>02-05-2024</td>
+                            <td>PL-PIP-2405-000009</td>
+                            <td>INDAPLAS</td>
+                            <td>IWD PUSAT</td>
+                            <td>CANCELLED</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
