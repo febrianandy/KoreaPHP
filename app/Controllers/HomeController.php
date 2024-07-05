@@ -8,11 +8,11 @@ class HomeController extends Controller {
     
     public function index()
     {
-       $this->view("Home");
+       $this->view("dashboard");
     }
 
     public function login()
     {
-       $this->view("Login");
+       $this->view("login");
     }
 }
