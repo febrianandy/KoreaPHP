@@ -9,7 +9,7 @@ class Response {
         echo json_encode($data);
         exit;
     }
-
+    
     public static function error(string $message, int $statusCode = 400): void
     {
         self::json(['error' => $message], $statusCode);
