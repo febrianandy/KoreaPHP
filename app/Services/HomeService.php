@@ -3,5 +3,5 @@
 namespace App\Services;
 
 class HomeService{
-
+    
 }
